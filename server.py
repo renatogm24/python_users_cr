@@ -11,20 +11,61 @@ def index():
 
 @app.route("/user/new")
 def user_form():
-    return render_template("user_form.html")
+    title = "Create user"
+    data = {
+        "id": 0,
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "created_at" : "",
+        "updated_at" : ""
+    }
+    user = User(data)
+    return render_template("user_form.html", user=user, title=title)
+
+@app.route("/user/edit/<int:id>")
+def user_show(id):
+    title = "Edit user"
+    data = {
+        "id": id
+    }
+    user = User.get_user_by_id(data)
+    return render_template("user_form.html", user=user, title = title)
+
+@app.route("/user/delete/<int:id>")
+def delete(id):
+    data = {
+        "id": id
+    }
+    User.delete(data)
+    return redirect("/users")
+
+@app.route("/user/show/<int:id>")
+def user_edit(id):
+    data = {
+        "id": id
+    }
+    user = User.get_user_by_id(data)
+    return render_template("user_info.html", user=user)
 
 @app.route('/create_user', methods=["POST"])
 def create_user():
-    # Primero hacemos un diccionario de datos a partir de nuestro request.form proveniente de nuestra plantilla
-    # Las claves en los datos tienen que alinearse exactamente con las variables en nuestra cadena de consulta
-    data = {
+    if(request.form["id"] != 0):
+      data = {
+        "id": request.form["id"],
         "first_name": request.form["first_name"],
         "last_name" : request.form["last_name"],
         "email" : request.form["email"]
-    }
-    # Pasamos el diccionario de datos al método save de la clase Friend
-    User.save(data)
-    # No olvides redirigir después de guardar en la base de datos
+      }
+      User.update(data)
+    else:
+      data = {
+          "first_name": request.form["first_name"],
+          "last_name" : request.form["last_name"],
+          "email" : request.form["email"]
+      }
+      User.save(data)
+
     return redirect('/users')
             
 if __name__ == "__main__":

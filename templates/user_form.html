@@ -11,22 +11,24 @@
 
 <body>
     <div class="container">
-        <h1 class="display-6 my-3">Create user</h1>
+        <h1 class="display-6 my-3">{{title}}</h1>
 
         <form class="row" action="/create_user" method="POST">
+            <input type="hidden" name="id" value="{{user.id}}" />
             <label for="first_name" class="form-label">First name:</label>
             <div class="input-group mb-4">
-                <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First name" />
+                <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First name" value="{{user.first_name}}" />
             </div>
             <label for="last_name" class="form-label">Last name:</label>
             <div class="input-group mb-4">
-                <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last Name" />
+                <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last Name" value="{{user.last_name}}" />
             </div>
             <label for="email" class="form-label">Email:</label>
             <div class="input-group mb-4">
-                <input type="email" id="email" name="email" class="form-control" placeholder="e.g. mario@example.com" />
+                <input type="email" id="email" name="email" class="form-control" placeholder="e.g. mario@example.com" value="{{user.email}}" />
             </div>
-            <button class="col-2 btn btn-primary" type="submit">Save</button>
+            <button class="col-2 btn btn-primary" type="submit">Save</button> {% if title == "Edit user" %}
+            <a class="col-2 btn btn-primary mx-4" href="/users">Show users</a> {% endif %}
         </form>
     </div>
 </body>
